@@ -48,11 +48,11 @@ python3 first_time.py
 ## Schedule update
 Once you have verified the application is updating your records as intended,
 you may schedule it to run at regular time intervals.
-Add `update.py` to your schedule tasks software.
+Add `updater.py` to your schedule tasks software.
 
 Example: In linux I use `crontab` to check and update server ip every day at 12:30 a.m:
 ```shell
-29 0 * * * python3 /path/to/update.py
+29 0 * * * python3 /path/to/updater.py
 ```
 
 
