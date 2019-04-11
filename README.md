@@ -52,7 +52,7 @@ Add `updater.py` to your schedule tasks software.
 
 Example: In linux I use `crontab` to check and update server ip every day at 12:30 a.m:
 ```shell
-29 0 * * * python3 /path/to/updater.py
+29 0 * * * /usr/bin/python3 /path/to/updater.py
 ```
 
 
