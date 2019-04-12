@@ -78,6 +78,7 @@ while True:
         update_status = "created"
         print("\n", ST.os("Creating new API file ..."), "\n")
         old_file = open("./api_data.json", "w")
+        
     # write data to the file
     data = {"cf_email": cf_email,
             "cf_auth_token": cf_auth_token,
