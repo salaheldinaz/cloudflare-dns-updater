@@ -109,16 +109,26 @@ class CF:
         else:
             print(ST.os("IP address changed,updating DNS " + record_type + " record"))
             url = self.api_url + self.domain_token + "/dns_records/" + self.record_token
-            payload = {"type": record_type, "name": current_domain, "content": new_ip, "ttl": 1, "proxied": "false"}
-            requests.put(url, data=payload, headers=self.header)
-            print(ST.hd("Domain "
-                        + current_domain
-                        + " | ip address updated to "
-                        + new_ip + " | DNS record "
-                        + record_type))
-            update_status = "updated"
-            return update_status
 
+            payload = '{"type":"' + str(record_type) \
+                       + '","name":"' + str(current_domain) \
+                       + '","content":"' + str(new_ip) \
+                       + '","ttl":1,"proxied":true}'
+
+            response = requests.put(url, data=payload, headers=self.header)
+            done = json.loads(response.text)["success"]
+            if done is True:
+                print(ST.hd("Domain "
+                            + current_domain
+                            + " | ip address updated to "
+                            + new_ip + " | DNS record "
+                            + record_type))
+                update_status = "updated"
+                return update_status
+            else:
+                print("Domain update failed")
+                update_status = "failed"
+                return update_status
 # logging
     @staticmethod
     def log_(update_status, current_ip, new_ip, current_domain):
@@ -132,7 +142,7 @@ class CF:
                           + update_status
                           + ", ip: " + current_ip + " > " + new_ip
                           + "\n")
-        elif update_status == "unchanged":
+        elif update_status == "unchanged" or "failed":
             log_msg = str(current_domain
                           + " | DNS record "
                           + update_status
