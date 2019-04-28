@@ -85,8 +85,8 @@ class CF:
             print(ST.hd("\nDNS records for domain :" + str(cf_domain) + " :\n"))
             i = 1
             for record in dns:
-                dns_records[i] = record['type'], record['id']
-                print(str(i) + " : " + record['type'])
+                dns_records[i] = record['type'], record['id'], record['name'], record['content']
+                print(str(i) + " : ", record['type'], " | ", record['name'], " | ", record['content'])
                 i = i + 1
 
             return dns_records
@@ -134,24 +134,19 @@ class CF:
     def log_(update_status, current_ip, new_ip, current_domain):
         ts = time.time()
         log_time = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-        log_msg = ""
+        api_file_msg ={"created", "recreated", "added"}
+        dns_msg = {"unchanged", "failed"}
 
-        if update_status == "updated":
-            log_msg = str(current_domain
-                          + " | DNS record "
-                          + update_status
-                          + ", ip: " + current_ip + " > " + new_ip
-                          + "\n")
-        elif update_status == "unchanged" or "failed":
-            log_msg = str(current_domain
-                          + " | DNS record "
-                          + update_status
-                          + ", ip: " + current_ip
-                          + "\n")
-        elif update_status == "created" or "recreated":
-            log_msg = str(" API File " + update_status + " for the domain " + current_domain + "\n")
+        if update_status in api_file_msg:
+            log_msg = "API File " + str(update_status) + " | Domain: " + str(current_domain) + "\n"
+        elif update_status == "updated":
+            log_msg = str(current_domain) + " | DNS record " + str(update_status) + ", ip: " + str(current_ip) + " > " + str(new_ip) + "\n"
+        elif update_status in dns_msg:
+            log_msg = str(current_domain) + " | DNS record " + str(update_status) + " , ip: " + str(current_ip) + '\n'
+        else:
+            log_msg = "logging error"
 
-        log_data = str(log_time) + " | " + str(log_msg)
+        log_data = str(log_time) + " | " + log_msg
         print(ST.hd(log_data))
 
         # Creating file

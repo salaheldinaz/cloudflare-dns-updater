@@ -57,7 +57,6 @@ Example: In linux I use `crontab` to check and update server ip every day at 12:
 
 
 ## Todo list
-- Add a check class for success update
 - Add more detailed error messages
 - Filter DNS records to just records accept ip as value
 
